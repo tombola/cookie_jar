@@ -1,0 +1,29 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function cookie_jar_menu() {
+  $items['cookiejar'] = array(
+    'title' => 'Set context for user testing by cookie',
+    'page callback' => '_set_cookiejar',
+    'page arguments' => filter_var(array(1), FILTER_SANITIZE_STRING),
+    'access callback' => TRUE,
+    'expanded' => TRUE,
+  );
+  return $items;
+}
+
+function _set_cookiejar($context = FALSE) {
+  // $_SESSION['cookiejar'] = $inst;
+  if ($context) {
+    user_cookie_save(array('cookiejar'=>$context));
+    global $base_url;
+    drupal_set_message("A testing context of <em>$context</em> has been set for this computer/browser<br/>Your experience of the site might now change slightly to test a new feature.<br/>To clear this effect just clear your cookies or visit $base_url/cookiejar");
+    drupal_goto('<front>');
+  }
+  else {
+    user_cookie_delete('cookiejar');
+    drupal_set_message("Testing context cleared, site should now work as before");
+    drupal_goto('<front>');
+  }
+}

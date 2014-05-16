@@ -1,0 +1,4 @@
+name = Cookie Jar
+description = Set a cookie to allow testing of features with individual (anonymous) users
+package = tombola
+core = 7.x
